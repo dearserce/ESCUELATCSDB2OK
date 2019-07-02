@@ -1,0 +1,27 @@
+﻿@model List<EscuelaTCSDB.Models.ViewModel.CalificacionesViewModel>
+@{
+    Layout = null;
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Calificacion</th>
+            <th>Opciones</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var x in Model)
+        {
+            <tr>
+                <td>@x.Nombre</td>
+                <td>
+                    @Html.TextBoxFor(y => x.Calificacion, new { id="txtCalif_"+@x.Id})
+                </td>
+                <td><button type="button" class="btn-primary btn_agregar" id="calif_@x.Id" id_calif="@x.Id" cal_actual ="@x.Calificacion">Agregar Calificacion</button></td>
+            </tr>
+        }
+
+    </tbody>
+</table>

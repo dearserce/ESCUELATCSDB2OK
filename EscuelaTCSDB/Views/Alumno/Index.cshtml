@@ -1,0 +1,135 @@
+﻿@model EscuelaTCSDB.Models.ViewModel.AlumnoViewModel
+@{
+    ViewBag.Title = "Visualizar Calificaciones";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    p {
+        text-align: justify;
+        margin: 0 0 10px;
+    }
+</style>
+
+<div class="container">
+    <h1>Visualizar Calificaciones</h1>
+    <div class="row">
+        <div class="col-sm-3">            
+            <div class="form-group">
+                <p text-align="justify">Texto Ejemplo.</p>
+            </div>
+        </div>
+        <div class="col-sm-9">
+            @Html.Hidden("id_persona", Model.id_persona, new { id = "id_persona" })
+            <table id="demotable" class="table table-striped table-condensed dataTable">
+                <thead><tr></tr></thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <!--http://localhost:53488/AlumnosCalificaciones-->
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+                var id_alumno = $('#id_persona').attr('value');
+                $.ajax({
+                    url: "/api/AlumnosCalificaciones/",
+                    method: "get",
+                    data: { id_alumno: id_alumno},
+                    dataType: "Json"
+                }).done(function (result) {
+                    var data = [];
+                    data = result;
+                    console.log(data);
+
+                    $.each(data.columns, function (k, colObj) {
+                        str = '<th>' + colObj.name + '</th>';
+                        $(str).appendTo('#demotable>thead>tr');
+                    });
+
+                    // Add some Render transformations to Columns
+                    // Not a good practice to add any of this in API/ Json side
+                    data.columns[0].render = function (data, type, row) {
+                        return '<h4>' + data + '</h4>';
+                    }
+                    
+
+                    $('#demotable').dataTable({
+                        "data": data.data,
+                        "columns": data.columns,
+                        "fnInitComplete": function () {
+                            // Event handler to be fired when rendering is complete (Turn off Loading gif for example)
+                            console.log('Datatable rendering complete');
+                        }
+                    });
+
+
+                    //alert(conta);
+                });
+
+        });
+    </script>
+    <!--    script type="text/javascript">
+        $(document).ready(function () {
+                        var id_persona = $("#id_persona").val();
+            $.ajax({
+                    url: "/api/AlumnosCalificaciones/",
+               method: "get",
+               data: { id_alumno: id_persona},
+                    dataType: "Json"
+                }).done(function (result) {
+                    console.log("done de calif");
+                   // console.log(result);
+                    var informacion = [];
+                    informacion = result;
+                    var conta = 0;
+                    console.log(informacion);
+                    var str = '';
+                    $.each(informacion, function (k, col) {
+                        conta++;
+                         str = '<th>' + col.gpPeriodo.periodo + '</th>';
+                        $(str).appendTo('#demotable'+'>thead>tr');
+                    });
+                    
+                        // Add some Render transformations to Columns
+                    // Not a good practice to add any of this in API/ Json side
+                    //informacion[0].gpPeriodo.periodo.render = function (data, type, row) {
+                    //    return '<h4>' + informacion.calificacion + '</h4>';
+                    //    }
+                        // Debug? console.log(data.columns[0]);
+                    $('#demotable').dataTable({
+                        "data": informacion,
+                        "columns": "calificacion",
+                            "fnInitComplete": function () {
+                                // Event handler to be fired when rendering is complete (Turn off Loading gif for example)
+                                console.log('Datatable rendering complete');
+                            }
+                        });
+
+                    alert(conta);
+
+                }).fail(function (jqXHR, exception) {
+                        var msg = '';
+                        if (jqXHR.status === 0) {
+                            msg = 'Not connect.\n Verify Network.';
+                        } else if (jqXHR.status == 404) {
+                            msg = 'Requested page not found. [404]';
+                        } else if (jqXHR.status == 500) {
+                            msg = 'Internal Server Error [500].';
+                        } else if (exception === 'parsererror') {
+                            msg = 'Requested JSON parse failed.';
+                        } else if (exception === 'timeout') {
+                            msg = 'Time out error.';
+                        } else if (exception === 'abort') {
+                            msg = 'Ajax request aborted.';
+                        } else {
+                            msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                        }
+                        console.log(msg);
+                    });
+                    
+        });
+    </script>
+        -->
+}

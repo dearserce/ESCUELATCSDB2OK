@@ -1,0 +1,29 @@
+﻿<!-- Se declara Siempre que modelo se va a utilizar-->
+@model IEnumerable<EscuelaTCSDB.Models.Grupo>
+@{
+    ViewBag.Title = "Grupos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Grupos</h2>
+<p>@Html.ActionLink("Nuevo ", "Create")</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Codigo</th>
+        </tr>
+        <!--Dynamic content-->
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(x => item.Id)</td>
+                <td>@Html.DisplayFor(x => item.codigo)</td>
+                <td>
+                    @Html.ActionLink("Editar", "Editar", new { id = item.Id }) |
+                    @Html.ActionLink("Eliminar", "Eliminar", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </thead>
+</table>
+

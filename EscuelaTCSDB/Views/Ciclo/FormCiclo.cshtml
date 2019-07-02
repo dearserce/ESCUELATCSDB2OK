@@ -1,0 +1,37 @@
+﻿@model EscuelaTCSDB.Models.ViewModel.CicloViewModel
+@{
+                /**/
+
+                ViewBag.Title = "Agregar Ciclo";
+                Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Agregar Modalidad</h2>
+
+@using (Html.BeginForm("Crear", "Ciclo"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.fecha_inicio, new { @class = "form-label" })
+        @Html.EditorFor(x => x.fecha_inicio, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(x => x.fecha_inicio, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.fecha_fin, new { @class = "form-label" })
+        @Html.EditorFor(x => x.fecha_fin, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(x => x.fecha_fin, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.ModalidadId, new { @class = "form-label" })
+        @Html.DropDownListFor(x => x.ModalidadId, new SelectList(Model.modalidadList,"Id","descripcion"),"selecciona Modalidad", new { @class = "form-control"})
+        @Html.ValidationMessageFor(x => x.ModalidadId, "", new { @class = "text-danger" })
+
+    </div>
+    //:D form
+    @Html.HiddenFor(x => x.Id)
+    <input type="submit" value="Guardar" />
+}
+
+
