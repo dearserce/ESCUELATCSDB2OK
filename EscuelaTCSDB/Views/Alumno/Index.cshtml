@@ -13,7 +13,7 @@
 <div class="container">
     <h1>Visualizar Calificaciones</h1>
     <div class="row">
-        <div class="col-sm-3">            
+        <div class="col-sm-3">
             <div class="form-group">
                 <p text-align="justify">Texto Ejemplo.</p>
             </div>
@@ -30,106 +30,129 @@
 @section Scripts{
     <!--http://localhost:53488/AlumnosCalificaciones-->
     <script type="text/javascript">
+        function siguiente() {
+            alert('Desde function siguiente');
+        };
+
         $(document).ready(function () {
 
-                var id_alumno = $('#id_persona').attr('value');
-                $.ajax({
-                    url: "/api/AlumnosCalificaciones/",
-                    method: "get",
-                    data: { id_alumno: id_alumno},
-                    dataType: "Json"
-                }).done(function (result) {
-                    var data = [];
-                    data = result;
-                    console.log(data);
+            var id_alumno = $('#id_persona').attr('value');
+            $.ajax({
+                url: "/api/AlumnosCalificaciones/",
+                method: "get",
+                data: { id_alumno: id_alumno },
+                dataType: "Json"
+            }).done(function (result) {
+                var data = [];
+                data = result;
 
-                    $.each(data.columns, function (k, colObj) {
-                        str = '<th>' + colObj.name + '</th>';
-                        $(str).appendTo('#demotable>thead>tr');
-                    });
-
-                    // Add some Render transformations to Columns
-                    // Not a good practice to add any of this in API/ Json side
-                    data.columns[0].render = function (data, type, row) {
-                        return '<h4>' + data + '</h4>';
-                    }
-                    
-
-                    $('#demotable').dataTable({
-                        "data": data.data,
-                        "columns": data.columns,
-                        "fnInitComplete": function () {
-                            // Event handler to be fired when rendering is complete (Turn off Loading gif for example)
-                            console.log('Datatable rendering complete');
-                        }
-                    });
-
-
-                    //alert(conta);
+                $.each(data.columns, function (k, colObj) {
+                    str = '<th>' + colObj.name + '</th>';
+                    $(str).appendTo('#demotable>thead>tr');
                 });
 
-        });
-    </script>
-    <!--    script type="text/javascript">
-        $(document).ready(function () {
-                        var id_persona = $("#id_persona").val();
-            $.ajax({
-                    url: "/api/AlumnosCalificaciones/",
-               method: "get",
-               data: { id_alumno: id_persona},
-                    dataType: "Json"
-                }).done(function (result) {
-                    console.log("done de calif");
-                   // console.log(result);
-                    var informacion = [];
-                    informacion = result;
-                    var conta = 0;
-                    console.log(informacion);
-                    var str = '';
-                    $.each(informacion, function (k, col) {
-                        conta++;
-                         str = '<th>' + col.gpPeriodo.periodo + '</th>';
-                        $(str).appendTo('#demotable'+'>thead>tr');
-                    });
-                    
-                        // Add some Render transformations to Columns
-                    // Not a good practice to add any of this in API/ Json side
-                    //informacion[0].gpPeriodo.periodo.render = function (data, type, row) {
-                    //    return '<h4>' + informacion.calificacion + '</h4>';
-                    //    }
-                        // Debug? console.log(data.columns[0]);
-                    $('#demotable').dataTable({
-                        "data": informacion,
-                        "columns": "calificacion",
-                            "fnInitComplete": function () {
-                                // Event handler to be fired when rendering is complete (Turn off Loading gif for example)
-                                console.log('Datatable rendering complete');
+                for (var i = 1; i < data.columns.length; i++) {
+                    data.columns[i].render = function (datos, type, row) {
+                        var valores = '';
+                        var rowProps = Object.keys(row);
+                        $.each(rowProps, function (k, c) {
+                            if (c.toString().includes('id_')) {
+                                valores += c + '="' + Object.values(row)[k] + '" ';
                             }
                         });
+                        var input = '<a href="#" class="js-edit-calificacion" ' + valores + '>' + datos + '<a/>';
+                        return input;
+                    }
+                }
 
-                    alert(conta);
+                // Add some Render transformations to Columns
+                // Not a good practice to add any of this in API/ Json side
+                data.columns[0].render = function (data, type, row) {
+                    return '<h4>' + data + '</h4>';
+                }
 
-                }).fail(function (jqXHR, exception) {
-                        var msg = '';
-                        if (jqXHR.status === 0) {
-                            msg = 'Not connect.\n Verify Network.';
-                        } else if (jqXHR.status == 404) {
-                            msg = 'Requested page not found. [404]';
-                        } else if (jqXHR.status == 500) {
-                            msg = 'Internal Server Error [500].';
-                        } else if (exception === 'parsererror') {
-                            msg = 'Requested JSON parse failed.';
-                        } else if (exception === 'timeout') {
-                            msg = 'Time out error.';
-                        } else if (exception === 'abort') {
-                            msg = 'Ajax request aborted.';
-                        } else {
-                            msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                        }
-                        console.log(msg);
-                    });
-                    
+                $('#demotable').dataTable({
+                    "data": data.data,
+                    "columns": data.columns,
+                    "fnInitComplete": function () {
+                        // Event handler to be fired when rendering is complete (Turn off Loading gif for example)
+                        $('#demotable').on("click", ".js-edit-calificacion", function () {
+                            var nextRow = $(this).closest('tr').next('tr');
+                            var tdIndex = $(this).parent().index();
+                            var th = $('#demotable th').eq(tdIndex);
+                            var columnName = th.text();
+                            var periodoColumn = columnName.substring(columnName.indexOf('_') + 1, columnName.length);
+                            $(this).each(function () {
+                                $.each(this.attributes, function () {
+                                    // this.attributes is not a plain object, but an array
+                                    // of attribute nodes, which contain both the name and value
+                                    if (this.specified && this.name.includes('id_')) {
+                                        var propName = this.name.toString();
+                                        var periodo = propName.substring(propName.indexOf('_') + 1, propName.length);
+                                        if (periodoColumn == periodo) {
+                                            var gpp_id = this.value;
+                                            bootbox.prompt({
+                                                title: 'Calificame perro - ' + gpp_id,
+                                                size: 'large',
+                                                inputType: 'number',
+                                                cancelButton: false,
+                                                buttons: {
+                                                    confirm: {
+                                                        label: "Siguiente",
+                                                    }
+                                                },
+                                                callback: function (calificacion) {
+                                                    if (!calificacion) { location.reload(); return; }
+                                                    //peticion hermosa
+
+                                                    $.ajax({
+                                                        url: "/api/AlumnosCalificaciones/?id_gpp=" + gpp_id  + "&calificacion=" + calificacion,
+                                                        method: "put",
+                                                        data: { id_gpp: gpp_id, calificacion: calificacion }
+                                                    }).done(function (r, e, z) {
+                                                        console.log(calificacion);
+                                                        var nexttd = nextRow.find('td').eq(tdIndex);
+                                                        var nextanchor = nexttd.children(0);
+                                                        nextanchor.trigger("click");
+                                                        console.log(nexttd.html());
+
+                                                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                                                        var response = $.parseJSON(jqXHR.responseText);
+                                                        console.log(response.message);
+
+                                                        var msg = '';
+                                                        if (jqXHR.status === 0) {
+                                                            msg = 'Not connect.\n Verify Network.';
+                                                        } else if (jqXHR.status === 404) {
+                                                            msg = 'Requested page not found. [404]';
+                                                        } else if (jqXHR.status === 500) {
+                                                            msg = 'Internal Server Error [500].';
+                                                        } else if (exception === 'parsererror') {
+                                                            msg = 'Requested JSON parse failed.';
+                                                        } else if (exception === 'timeout') {
+                                                            msg = 'Time out error.';
+                                                        } else if (exception === 'abort') {
+                                                            msg = 'Ajax request aborted.';
+                                                        } else {
+                                                            msg = 'Uncaught Error.\n' + jqXHR.responseText;
+                                                        }
+                                                        bootbox.alert(msg);
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    }
+                                });
+                            });
+                        });
+                    }
+                });
+
+
+
+                //alert(conta);
+            });
+
         });
     </script>
-        -->
 }

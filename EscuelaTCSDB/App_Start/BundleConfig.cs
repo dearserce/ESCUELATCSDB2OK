@@ -11,6 +11,7 @@ namespace EscuelaTCSDB
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                 "~/Scripts/datatables/jquery.datatables.js",
                         "~/Scripts/datatables/datatables.bootstrap.js",
+                        "~/Scripts/bootbox.js",
                         "~/Scripts/jquery-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
