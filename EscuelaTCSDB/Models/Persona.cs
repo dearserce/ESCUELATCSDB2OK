@@ -23,6 +23,7 @@ namespace EscuelaTCSDB.Models
         public string apellido { get; set; }
         [Required]
         public string password { get; set; }
+        public string foto { get; set; }
         public List<ApplicationUser> usuarios { get; set; }
         public static Persona GetByEmail(String email, int id)
         {

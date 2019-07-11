@@ -1,0 +1,44 @@
+﻿<!-- Se declara Siempre que modelo se va a utilizar-->
+@model IEnumerable <EscuelaTCSDB.Models.Persona>
+@{
+    ViewBag.Title = "Personas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Personas</h2>
+<p>@Html.ActionLink("Nueva Persona","Create")</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Email</th>
+            <th>Tipo</th>
+            <th>Opciones</th>
+        </tr>
+        <!--Dynamic content-->
+         @foreach (var item in Model) {
+    <tr>
+        <td>@Html.DisplayFor(x => item.Id)</td>
+        <td>@Html.DisplayFor(x => item.nombre)</td>
+        <td>@Html.DisplayFor(x => item.apellido)</td>
+        <td>@Html.DisplayFor(x => item.email)</td>
+        <td>@Html.DisplayFor(x => item.TipoPersona.descripcion)</td>
+        <td>
+
+            @Html.ActionLink("Editar", "Editar", new { id = item.Id }) |
+            @using Microsoft.AspNet.Identity
+
+            @if (item.usuarios.Where(x => x.Id == User.Identity.GetUserId()).FirstOrDefault() == null)
+            {
+            @Html.ActionLink("Eliminar", "Eliminar", new { id = item.Id })
+            }
+
+
+
+        </td>
+    </tr>
+         }
+    </thead>
+</table>
+

@@ -1,0 +1,51 @@
+﻿
+<div class="container">
+    <div class="row">
+        <h2>Subir fotos secreto</h2>
+        <form method="post" enctype="multipart/form-data" id="formSecret">
+            <div class="form-group">
+
+                <input type="file" name="archivo" id="archivo" multiple />
+                <input type="button" id="btn-sbmt" name="btn-sbmt" value="guardar" />
+            </div>
+        </form>
+       
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+            var file = [];
+            var formData = new FormData();
+            var input = document.getElementById('archivo');
+                $('#archivo').change(function () {
+                    file = [];
+                    for (var i = 0; i < input.files.length; i++) {
+                        console.log("existo");
+                formData.append('file', input.files[i]);
+                    }
+                });
+            $('#btn-sbmt').click(function () {
+                $.ajax({
+                    url: 'http://localhost:53488/api/Personas/',
+                    method: 'post',
+                    data: formData,
+                    contentType: false,
+                    processData: false
+                }).done(function (x) {
+                    var lista = x;
+                    alert(lista);
+                }).fail(function (a, b, c) {
+                    console.log(a);
+                    console.log(b);
+                    console.log(c);
+                });
+            });
+
+
+        });
+    </script>
+}

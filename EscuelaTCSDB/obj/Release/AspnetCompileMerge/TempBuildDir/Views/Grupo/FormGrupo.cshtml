@@ -1,0 +1,24 @@
+﻿@model EscuelaTCSDB.Models.ViewModel.GrupoViewModel
+@{
+    ViewBag.Title = "Agregar Grupo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Agregar grupo</h2>
+
+@using (Html.BeginForm("Crear", "Grupo"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.codigo, new { @class = "form-label" })
+        @Html.EditorFor(x => x.codigo, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(x => x.codigo, "", new { @class = "text-danger" })
+
+    </div>
+    //:D form
+    @Html.HiddenFor(x => x.Id)
+    <input type="submit" value="Guardar" />
+}
+
+

@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="EscuelaTCS" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\franc\\source\\repos\\EscuelaTCSDB\\EscuelaTCSDB\\obj\\Release\\Package\\PackageTmp$" />
+    <parameterEntry kind="ProviderPath" scope="setAcl" match="^C:\\Users\\franc\\source\\repos\\EscuelaTCSDB\\EscuelaTCSDB\\obj\\Release\\Package\\PackageTmp$" />
+  </parameter>
+  <parameter name="entityFramework-Web.config Connection String" description="entityFramework Cadena de conexión que usa la aplicación en web.config para obtener acceso a la base de datos." value="Data Source=VM67FB8DD\SQLEXPRESS;Initial Catalog=EscuelaTCSDB2;Persist Security Info=True;User Id=sa;Password=4bT8PGg4MkNb" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\franc\\source\\repos\\EscuelaTCSDB\\EscuelaTCSDB\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='entityFramework']/@connectionString" />
+  </parameter>
+</parameters>

@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.IO;
 
 namespace EscuelaTCSDB.Controllers
 {
@@ -46,7 +47,7 @@ namespace EscuelaTCSDB.Controllers
             List<Persona> lp =
                 _ctx.Personas.
                 Include(x => x.TipoPersona)
-                .Include( x => x.usuarios)
+                .Include(x => x.usuarios)
                .ToList();
             return View(lp);
         }
@@ -64,13 +65,30 @@ namespace EscuelaTCSDB.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Crear(PersonaViewModel pvm)
         {
-            Persona p = null;
+            string rootPath = Server.MapPath(Constantes.RUTA_GUARDAR_FOTOS_PERFIL_PERSONAS);
+            Persona p = null; 
             String tipo = "";
+            string filePath = "";
+            string relativePath = "";
             try {
                 //Validamos que todo sea correcto
                 if (!ModelState.IsValid) {
                     pvm.TipoPersonas = _ctx.TipoPersonas.ToList();
                     return View("FormPersona", pvm);
+                }
+                HttpPostedFileBase foto = pvm.foto_archivo;
+                string nombre_archivo = "";
+                if (foto != null) {
+                    nombre_archivo = Guid.NewGuid() + Path.GetExtension(foto.FileName);
+
+                    if (!Directory.Exists(rootPath))
+                    {
+                        Directory.CreateDirectory(rootPath);
+                    }
+                    filePath = Path.Combine(rootPath,nombre_archivo);
+                    relativePath = Constantes.RUTA_GUARDAR_FOTOS_PERFIL_PERSONAS+nombre_archivo;
+                    foto.SaveAs(filePath);
+
                 }
 
                 if (pvm.Id == 0){
@@ -79,7 +97,12 @@ namespace EscuelaTCSDB.Controllers
                     p.apellido = pvm.apellido;
                     p.email = pvm.email;
                     p.password = pvm.password;
+                    if (!String.IsNullOrEmpty(relativePath))
+                    {
+                        p.foto = relativePath;
+                    }
                     p.TipoPersonaId = pvm.TipoPersonaId.Value;
+                    
                     _ctx.Personas.Add(p);
                 }
                 else
@@ -96,6 +119,16 @@ namespace EscuelaTCSDB.Controllers
                         valor.email = pvm.email;
                         valor.password = pvm.password;
                         valor.TipoPersonaId = pvm.TipoPersonaId.Value;
+                        //revisamos si tiene foto
+                        if (!String.IsNullOrEmpty(valor.foto)) {
+                            string ruta_absoluta = Server.MapPath(valor.foto);
+                            System.IO.File.Delete(ruta_absoluta);
+
+                        }
+                        if (!String.IsNullOrEmpty(relativePath)) {
+                            valor.foto = relativePath;
+                        }
+
                     }
 
                 }

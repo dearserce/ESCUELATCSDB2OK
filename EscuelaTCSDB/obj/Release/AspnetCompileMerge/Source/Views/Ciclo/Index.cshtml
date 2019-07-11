@@ -1,0 +1,32 @@
+﻿@model IEnumerable<EscuelaTCSDB.Models.Ciclo>
+@{
+    ViewBag.Title = "Ciclos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Ciclos</h2>
+<p>@Html.ActionLink("Nuevo Ciclo", "Create")</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Fin</th>
+            <th>Modalidad</th>
+        </tr>
+        <!--Dynamic content-->
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(x => item.Id)</td>
+                <td>@Html.DisplayFor(x => item.fecha_inicio)</td>
+                <td>@Html.DisplayFor(x => item.fecha_fin)</td>
+                <td>@Html.DisplayFor(x => item.Modalidad.descripcion)</td>
+
+                <td>
+                    @Html.ActionLink("Editar", "Editar", new { id = item.Id }) |
+                    @Html.ActionLink("Eliminar", "Eliminar", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </thead>
+</table>

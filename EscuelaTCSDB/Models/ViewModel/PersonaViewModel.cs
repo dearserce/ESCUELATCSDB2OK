@@ -17,17 +17,21 @@ namespace EscuelaTCSDB.Models.ViewModel
         [StringLength(100)]
         [Index(IsUnique = true)]
         [PersonaEmailValidation]
-        [EmailAddress] 
+        [EmailAddress]
         [Required]
         public string email { get; set; }
         public string nombre { get; set; }
         public string apellido { get; set; }
         [Required]
         public string password { get; set; }
-
+        [Display(Name="Subir foto")]
+        public HttpPostedFileBase foto_archivo { get; set; }
+        public string foto { get; set; }
         public PersonaViewModel()
         {
             Id = 0;
+            foto = Constantes.IMAGEN_DEFECTO;
+
         }
 
         public PersonaViewModel(Persona p)
@@ -38,6 +42,7 @@ namespace EscuelaTCSDB.Models.ViewModel
             password = p.password;
             email = p.email;
             TipoPersonaId = p.TipoPersonaId;
+            foto = String.IsNullOrEmpty(p.foto) ? Constantes.IMAGEN_DEFECTO : p.foto;
         }
     }
 }

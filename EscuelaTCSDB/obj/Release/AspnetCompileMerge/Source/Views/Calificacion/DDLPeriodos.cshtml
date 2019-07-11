@@ -1,0 +1,11 @@
+﻿@model List<EscuelaTCSDB.Models.ViewModel.DDLPeriodosViewModel>
+@{
+    Layout = null;
+    /*
+       ViewBag.Nums = new List<int> { 1, 2, 3, 4 };//assume you do this statement in controller
+    List<int> Nums = (List<int>)ViewBag.Nums;
+    @Html.DropDownList("Nums",new SelectList(Nums))
+     */
+}
+<label>Periodos</label>
+@Html.DropDownList("ddlPeriodo", new SelectList(Model,"periodo", "descripcion"), "-Selecciona Periodo-", new { @class = "form-control", @disabled="true" })

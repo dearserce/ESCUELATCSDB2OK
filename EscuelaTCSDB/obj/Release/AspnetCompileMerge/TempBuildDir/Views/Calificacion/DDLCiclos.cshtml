@@ -1,0 +1,6 @@
+﻿@model IEnumerable<EscuelaTCSDB.Models.Ciclo>
+@{
+    Layout = null;
+}
+<label>Ciclo</label>
+@Html.DropDownList("ddlCiclo", new SelectList(Model, "Id", "Descripcion"), "-Selecciona Ciclo-", new { @class = "form-control",  @disabled ="true" })

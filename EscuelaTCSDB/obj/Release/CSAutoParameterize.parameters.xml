@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="entityFramework-Web.config Connection String" description="entityFramework Cadena de conexión que usa la aplicación en web.config para obtener acceso a la base de datos." defaultValue="Data Source=VM67FB8DD\SQLEXPRESS;Initial Catalog=EscuelaTCSDB2;Persist Security Info=True;User Id=sa;Password=4bT8PGg4MkNb" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\franc\\source\\repos\\EscuelaTCSDB\\EscuelaTCSDB\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='entityFramework']/@connectionString" />
+  </parameter>
+  <parameter name="entityFramework_DatabasePublish-Web.config Connection String" description="entityFramework_DatabasePublish Cadena de conexión que usa la aplicación en web.config para obtener acceso a la base de datos." defaultValue="entityFramework_DatabasePublish.ConnetionString" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\franc\\source\\repos\\EscuelaTCSDB\\EscuelaTCSDB\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='entityFramework_DatabasePublish']/@connectionString" />
+  </parameter>
+</parameters>

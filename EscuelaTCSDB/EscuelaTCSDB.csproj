@@ -177,6 +177,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Constantes.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AlumnoController.cs" />
     <Compile Include="Controllers\api\AlumnosCalificacionesController.cs" />
@@ -184,6 +185,7 @@
     <Compile Include="Controllers\api\TiposPersonaController.cs" />
     <Compile Include="Controllers\CalificacionController.cs" />
     <Compile Include="Controllers\CicloController.cs" />
+    <Compile Include="Controllers\ContactoController.cs" />
     <Compile Include="Controllers\GrupoController.cs" />
     <Compile Include="Controllers\GrupoPersonasController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -283,6 +285,10 @@
     <Compile Include="Migrations\201906242114578_nullable_persona.Designer.cs">
       <DependentUpon>201906242114578_nullable_persona.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907091330214_foto.cs" />
+    <Compile Include="Migrations\201907091330214_foto.Designer.cs">
+      <DependentUpon>201907091330214_foto.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Calificacion.cs" />
@@ -305,6 +311,7 @@
     <Compile Include="Models\ViewModel\CalificacionesViewModel.cs" />
     <Compile Include="Models\ViewModel\CalificacionTableViewModel.cs" />
     <Compile Include="Models\ViewModel\CicloViewModel.cs" />
+    <Compile Include="Models\ViewModel\ContactoViewModel.cs" />
     <Compile Include="Models\ViewModel\DDLPeriodosViewModel.cs" />
     <Compile Include="Models\ViewModel\GpPeriodoViewModel.cs" />
     <Compile Include="Models\ViewModel\GrupoPersonaViewModel.cs" />
@@ -438,6 +445,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\common.scss" />
+    <None Include="Properties\PublishProfiles\ProdSettings.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.min.js" />
@@ -567,6 +575,11 @@
     <Content Include="Views\Calificacion\DDLPeriodos.cshtml" />
     <Content Include="Views\Calificacion\DDLMateria.cshtml" />
     <Content Include="Views\Alumno\Index.cshtml" />
+    <Content Include="Views\TipoPersona\subirFoto.cshtml" />
+    <Content Include="Views\Contacto\Index.cshtml" />
+    <None Include="Web.Unit.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -648,10 +661,23 @@
     <EmbeddedResource Include="Migrations\201906242114578_nullable_persona.resx">
       <DependentUpon>201906242114578_nullable_persona.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907091330214_foto.resx">
+      <DependentUpon>201907091330214_foto.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unit|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

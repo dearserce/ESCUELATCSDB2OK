@@ -1,0 +1,33 @@
+﻿<!-- Se declara Siempre que modelo se va a utilizar-->
+@model IEnumerable<EscuelaTCSDB.Models.Modalidad>
+@{
+    ViewBag.Title = "Modalidades";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Modalidad</h2>
+<p>@Html.ActionLink("Nueva Modalidad", "Create")</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Descripcion</th>
+            <th>Cantidad de Meses</th>
+            <th>Cantidad de Periodos</th>
+        </tr>
+        <!--Dynamic content-->
+        @foreach (var item in Model)
+        {
+    <tr>
+        <td>@Html.DisplayFor(x => item.Id)</td>
+        <td>@Html.DisplayFor(x => item.descripcion)</td>
+        <td>@Html.DisplayFor(x => item.n_meses)</td>
+        <td>@Html.DisplayFor(x => item.n_periodos)</td>
+
+        <td>
+            @Html.ActionLink("Editar", "Editar", new { id = item.Id }) |
+            @Html.ActionLink("Eliminar", "Eliminar", new { id = item.Id })
+        </td>
+    </tr>
+        }
+    </thead>
+</table>

@@ -30,7 +30,10 @@ namespace EscuelaTCSDB.Controllers
             List<TipoPersona> ltp = _ctx.TipoPersonas.ToList();
             return View(ltp);
         }
-
+       
+        public ActionResult subirFoto() {
+            return View();
+        }
         public ActionResult Create() {
             ListTipoPersonaViewModel vm = new ListTipoPersonaViewModel();
             return View("FormTipoPersona", vm);

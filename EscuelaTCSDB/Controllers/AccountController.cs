@@ -91,7 +91,7 @@ namespace EscuelaTCSDB.Controllers
                     return View(model);
             }
         }
-
+        //tal vez
         //
         // GET: /Account/VerifyCode
         [AllowAnonymous]

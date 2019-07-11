@@ -1,0 +1,41 @@
+﻿@model IEnumerable<EscuelaTCSDB.Models.GrupoPersona>
+@{
+    ViewBag.Title = "Asignacion Grupos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Asignacion Grupos</h2>
+<p>@Html.ActionLink("Nueva Asignacion", "Create")</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Grupo</th>
+            <th>Materia</th>
+            <th>Ciclo</th>
+            <th>Persona</th>
+            <th>Profesor</th>
+        </tr>
+        <!--Dynamic content-->
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(x => item.Id)</td>
+                <td>@item.Grupo.codigo</td>
+                <td>@Html.DisplayFor(x => item.Materia.nombre)</td>
+                <td>
+                    @Html.DisplayFor(x => item.Ciclo.fecha_inicio) - 
+                                @Html.DisplayFor(x => item.Ciclo.fecha_fin)
+                            </td>
+                <td>@Html.DisplayFor(x => item.Persona.nombre)  
+                @Html.DisplayFor(x => item.Persona.apellido)</td>
+                <td>@Html.DisplayFor(x => item.Profesor.email)</td>
+               
+
+                <td>
+                    @Html.ActionLink("Editar", "Editar", new { id = item.Id }) |
+                    @Html.ActionLink("Eliminar", "Eliminar", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </thead>
+</table>
