@@ -14,6 +14,7 @@ namespace EscuelaTCSDB.Controllers
     public class CalificacionController : Controller
     {
         public ApplicationDbContext _ctx;
+
         private int id_profe { get {
                 string id_str = User.Identity.GetUserId();
                 var todo = _ctx.Users.Where(x => x.Id == id_str).FirstOrDefault();
@@ -31,18 +32,25 @@ namespace EscuelaTCSDB.Controllers
     
         public ActionResult Index()
         {
-            User.Identity.GetUserId();
-            List<GrupoPersona> gruposPersona = this.obtenerGrupos(id_profe);
-            List<Grupo> grupos = new List<Grupo>();
-            for (int i = 0; i < gruposPersona.Count; i++) {
-                Grupo g = gruposPersona[i].Grupo;
-                grupos.Add(g);
+            try
+            {
+                User.Identity.GetUserId();
+                List<GrupoPersona> gruposPersona = this.obtenerGrupos(id_profe);
+                List<Grupo> grupos = new List<Grupo>();
+                for (int i = 0; i < gruposPersona.Count; i++)
+                {
+                    Grupo g = gruposPersona[i].Grupo;
+                    grupos.Add(g);
+                }
+
+                //ahora removemos elementos repetidos.
+                List<Grupo> gruposFiltrados = grupos.Distinct().ToList();
+                ViewBag.ListaGrupos = new SelectList(gruposFiltrados, "id", "codigo");
+                return View();
             }
-            
-            //ahora removemos elementos repetidos.
-            List<Grupo> gruposFiltrados = grupos.Distinct().ToList();
-            ViewBag.ListaGrupos = new SelectList(gruposFiltrados,"id","codigo");
-            return View();
+            catch (Exception e) {
+                return View();
+            }
         }
         //Agregar Calificaciones
         public ActionResult AgregarCalificaciones(int id_gpp, double calActual, double calNueva) {

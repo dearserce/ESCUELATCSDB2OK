@@ -11,6 +11,7 @@ namespace EscuelaTCSDB
 {
     public class MvcApplication : System.Web.HttpApplication
     {
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
@@ -19,5 +20,10 @@ namespace EscuelaTCSDB
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+
+        protected void Application_Error(object sender, EventArgs a) {
+            var error = Server.GetLastError();
+            Logger.Error(error);
     }
+}
 }

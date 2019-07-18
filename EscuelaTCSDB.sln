@@ -11,16 +11,21 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		Unit|Any CPU = Unit|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{71579DAC-D487-4CE9-BAA0-1E807B673E3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{71579DAC-D487-4CE9-BAA0-1E807B673E3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71579DAC-D487-4CE9-BAA0-1E807B673E3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71579DAC-D487-4CE9-BAA0-1E807B673E3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71579DAC-D487-4CE9-BAA0-1E807B673E3A}.Unit|Any CPU.ActiveCfg = Unit|Any CPU
+		{71579DAC-D487-4CE9-BAA0-1E807B673E3A}.Unit|Any CPU.Build.0 = Unit|Any CPU
 		{77BC0C68-E7EC-46D9-9700-C52CCC744589}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{77BC0C68-E7EC-46D9-9700-C52CCC744589}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77BC0C68-E7EC-46D9-9700-C52CCC744589}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77BC0C68-E7EC-46D9-9700-C52CCC744589}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77BC0C68-E7EC-46D9-9700-C52CCC744589}.Unit|Any CPU.ActiveCfg = Unit|Any CPU
+		{77BC0C68-E7EC-46D9-9700-C52CCC744589}.Unit|Any CPU.Build.0 = Unit|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

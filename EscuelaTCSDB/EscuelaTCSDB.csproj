@@ -46,12 +46,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.6.6\lib\net45\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -110,6 +117,9 @@
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.0\lib\net40\WebActivatorEx.dll</HintPath>
     </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
@@ -326,6 +336,8 @@
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap-tour.min.css" />
+    <Content Include="Content\bootstrap-tourist.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\DataTables\css\autoFill.bootstrap.css" />
@@ -435,16 +447,57 @@
     <Content Include="Content\DataTables\images\sort_desc.png" />
     <Content Include="Content\DataTables\images\sort_desc_disabled.png" />
     <Content Include="Content\DataTables\swf\flashExport.swf" />
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\Img\bob.jpeg" />
+    <Content Include="Content\toastr.css" />
+    <Content Include="Content\toastr.min.css" />
+    <Content Include="Content\tooltipster\tooltipster-master\dist\css\plugins\tooltipster\sideTip\themes\tooltipster-sideTip-borderless.min.css" />
+    <Content Include="Content\tooltipster\tooltipster-master\dist\css\plugins\tooltipster\sideTip\themes\tooltipster-sideTip-light.min.css" />
+    <Content Include="Content\tooltipster\tooltipster-master\dist\css\plugins\tooltipster\sideTip\themes\tooltipster-sideTip-noir.min.css" />
+    <Content Include="Content\tooltipster\tooltipster-master\dist\css\plugins\tooltipster\sideTip\themes\tooltipster-sideTip-punk.min.css" />
+    <Content Include="Content\tooltipster\tooltipster-master\dist\css\plugins\tooltipster\sideTip\themes\tooltipster-sideTip-shadow.min.css" />
+    <Content Include="Content\tooltipster\tooltipster-master\dist\css\tooltipster.bundle.css" />
+    <Content Include="Content\tooltipster\tooltipster-master\dist\css\tooltipster.bundle.min.css" />
+    <Content Include="Content\tooltipster\tooltipster-master\dist\css\tooltipster.main.css" />
+    <Content Include="Content\tooltipster\tooltipster-master\dist\css\tooltipster.main.min.css" />
+    <Content Include="Content\tooltipster\tooltipster-master\dist\js\plugins\tooltipster\SVG\tooltipster-SVG.js" />
+    <Content Include="Content\tooltipster\tooltipster-master\dist\js\plugins\tooltipster\SVG\tooltipster-SVG.min.js" />
+    <Content Include="Content\tooltipster\tooltipster-master\dist\js\tooltipster.bundle.js" />
+    <Content Include="Content\tooltipster\tooltipster-master\dist\js\tooltipster.bundle.min.js" />
+    <Content Include="Content\tooltipster\tooltipster-master\dist\js\tooltipster.main.js" />
+    <Content Include="Content\tooltipster\tooltipster-master\dist\js\tooltipster.main.min.js" />
     <Content Include="favicon.ico" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootbox.js" />
     <Content Include="Scripts\bootbox.min.js" />
+    <Content Include="Scripts\bootstrap-tour.min.js" />
+    <Content Include="Scripts\bootstrap-tourist.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\common.scss" />
+    <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\tooltipster\tooltipster-master\bower.json" />
+    <Content Include="Content\tooltipster\tooltipster-master\composer.json" />
+    <Content Include="Content\tooltipster\tooltipster-master\LICENSE" />
+    <Content Include="Content\tooltipster\tooltipster-master\package.json" />
+    <Content Include="Content\tooltipster\tooltipster-master\README.md" />
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\toastr.scss" />
+    <Content Include="Content\toastr.less" />
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\PublishProfiles\ProdSettings.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
@@ -511,6 +564,7 @@
     <Content Include="Scripts\DataTables\responsive.foundation.min.js" />
     <Content Include="Scripts\DataTables\responsive.jqueryui.js" />
     <Content Include="Scripts\DataTables\responsive.jqueryui.min.js" />
+    <Content Include="Scripts\index.all.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
@@ -521,6 +575,12 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\popper.js" />
+    <Content Include="Scripts\tippy.js" />
+    <Content Include="Scripts\toastr.js" />
+    <Content Include="Scripts\toastr.min.js" />
+    <Content Include="Views\CustomErrors\generic.html" />
+    <Content Include="Views\CustomErrors\404.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -693,7 +753,9 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>53488</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:53488/</IISUrl>
+          <IISUrl>http://localhost:53489/</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://localhost:53489/</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -5,7 +5,9 @@
 }
 <div class="container">
     <h1>Agregar Calificaciones</h1>
+    <button type="button" id="btn-tutorial" class="btn btn-primary pull-right" title="Te puedo guiar a través de nuestros diferentes elementos, si es que tienes alguna duda!"> <strong>Tutorial <i class="fa fa-info"></i> </strong></button><br />
     <div class="row">
+
         <div class="col-sm-3">
             <div class="form-group">
                 @if (ViewBag.ListaGrupos != null)
@@ -21,7 +23,7 @@
                 @{Html.RenderAction("obtenerMaterias", new { id_grupo = -1, id_ciclo = -1 }); }
             </div>
             <div class="form-group" id="containerDDLPeriodo">
-                @{Html.RenderAction("obtenerPeriodos", new { id_grupo = -1, id_ciclo = -1 , id_materia = -1}); }
+                @{Html.RenderAction("obtenerPeriodos", new { id_grupo = -1, id_ciclo = -1, id_materia = -1 }); }
             </div>
 
         </div>
@@ -29,13 +31,85 @@
             <div id="containerListaCalificaciones">
                 @{Html.RenderAction("Filtrar", new { id_grupo = -1, id_ciclo = -1, id_materia = -1, periodo = -1 });}
             </div>
-         </div>
+        </div>
     </div>
 </div>
 @section Scripts
 {
     <script type="text/javascript">
         $(document).ready(function () {
+
+
+
+            var tour = new Tour({
+                storage: false,
+                animation: true,
+                backdrop: true,
+                storage: false,
+                smartPlacement: true,
+            });
+
+            //steps
+            tour.addSteps([
+                //first step
+                {
+                    element: "#Grupo_Id",
+                    placement: "auto",
+                    backdropPadding: 5,
+                    title: "Seleccionar Grupo",
+                    content: "En este apartado podrás visualizar los Grupos que tienes asignados, una vez que selecciones uno, se reflejará en la siguiente opción"
+                }, {
+                    element: "#ddlCiclo",
+                    placement: "auto",
+                    backdropPadding: 5,
+                    title: "Seleccionar Ciclo",
+                    content: "Tan pronto hayas seleccionado un Grupo, las opciones para ciclo aparecerán, se muestran de inicio a fin"
+                }, {
+                    element: "#ddlMateria",
+                    placement: "auto",
+                    backdropPadding: 5,
+                    title: "Seleccionar Ciclo",
+                    content: "Las Materias mostradas, son aquellas a las cuales has sido asignado y que también cumplan con estar dentro del grupo y el ciclo seleccionados"
+                }, {
+                    element: "#ddlPeriodo",
+                    placement: "auto",
+                    backdropPadding: 5,
+                    title: "Seleccionar Ciclo",
+                    content: "En este apartado se muestran los periodos para ese ciclo y materia"
+                }, {
+                    element: "#containerListaCalificaciones",
+                    placement: "auto",
+                    backdropPadding: 5,
+                    title: "Seleccionar Ciclo",
+                    content: "En esta tabla se mostrará toda la lista de alumnos a los cuales les puedes asignar calificación"
+                }, {
+                    element: "#thNombre",
+                    placement: "auto",
+                    backdropPadding: 5,
+                    title: "Seleccionar Ciclo",
+                    content: "Aqui solo se muestra el nombre del alumno"
+                }, {
+                    element: "#thCalificacion",
+                    placement: "auto",
+                    backdropPadding: 5,
+                    title: "Seleccionar Ciclo",
+                    content: "Puede que haya calificaciones no asignadas, se muestran con un 0, aqui puedes cambiar la calificación"
+                }, {
+                    element: "#thOpciones",
+                    placement: "auto",
+                    backdropPadding: 5,
+                    title: "Seleccionar Ciclo",
+                    content: "Finalmente, en esta sección puedes visualizar las otras opciones para el alumno"
+                }
+            ]);
+
+            $('#btn-tutorial').tooltipster();
+
+
+            $("#btn-tutorial").click(function () {
+                tour.start();
+            });
+
             var ddlGrupo = $("#Grupo_Id");
             $("#Grupo_Id").change(function () {
 
@@ -52,6 +126,9 @@
                     $('#ddlCiclo').removeAttr('disabled');
                     $("#ddlCiclo").change(llenaMateria);
 
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    var response = $.parseJSON(jqXHR.responseText);
+                    toastr.error(response.message);
                 });
             });
 
@@ -70,13 +147,16 @@
                     $("#containerDDLMateria").html(result);
                     $("#ddlMateria").removeAttr('disabled');
                     $("#ddlMateria").change(llenaPeriodo);
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    var response = $.parseJSON(jqXHR.responseText);
+                    toastr.error(response.message);
                 });
             }
 
             var llenaPeriodo = function () {
                 console.log("periodo ");
                 var ddlMateria = $(this);
-               var id_grupo = $("#Grupo_Id").val();
+                var id_grupo = $("#Grupo_Id").val();
                 var id_grupo = $("#Grupo_Id").val();
                 var id_ciclo = $("#ddlCiclo").val();
                 var id_materia = ddlMateria.val();
@@ -90,9 +170,12 @@
                     $("#containerDDLPeriodo").html(result);
                     $("#ddlPeriodo").removeAttr('disabled');
                     $("#ddlPeriodo").change(llenaFiltro);
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    var response = $.parseJSON(jqXHR.responseText);
+                    toastr.error(response.message);
                 });
             }
-            //otro             
+            //otro
 
             var llenaFiltro = function () {
                 var ddlPeriodo = $(this);
@@ -111,6 +194,9 @@
                     console.log(result);
                     $("#containerListaCalificaciones").html(result);
                     $(".btn_agregar").click(agregaCalificacion);
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    var response = $.parseJSON(jqXHR.responseText);
+                    toastr.error(response.message);
                 });
             }
 
@@ -119,23 +205,19 @@
                 var calificacion_actual = actual.attr('cal_actual');
                 var calif_id = actual.attr('id_calif');
                 var calificacion_nueva = $('#txtCalif_' + calif_id).val();
-               
+
                 $.ajax({
                     url: "/Calificacion/AgregarCalificaciones",
                     method: "post",
-                    data :{ id_gpp: calif_id, calActual: calificacion_actual, calNueva: calificacion_nueva },
+                    data: { id_gpp: calif_id, calActual: calificacion_actual, calNueva: calificacion_nueva },
                     dataType: "html"
                 }).done(function (result) {
                     alert("Guardado");
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    var response = $.parseJSON(jqXHR.responseText);
+                    toastr.error(response.message);
                 });
             }
         });
-        
-
-       
-       
-
-        
-        
     </script>
 }

@@ -144,3 +144,7 @@ C:\Users\franc\source\repos\EscuelaTCSDB\EscuelaTCSDB\obj\Release\EscuelaTCSDB.c
 C:\Users\franc\source\repos\EscuelaTCSDB\EscuelaTCSDB\obj\Release\EscuelaTCSDB.csproj.CopyComplete
 C:\Users\franc\source\repos\EscuelaTCSDB\EscuelaTCSDB\obj\Release\EscuelaTCSDB.dll
 C:\Users\franc\source\repos\EscuelaTCSDB\EscuelaTCSDB\obj\Release\EscuelaTCSDB.pdb
+C:\Users\franc\source\repos\EscuelaTCSDB\EscuelaTCSDB\bin\WebActivatorEx.dll
+C:\Users\franc\source\repos\EscuelaTCSDB\EscuelaTCSDB\bin\NLog.config
+C:\Users\franc\source\repos\EscuelaTCSDB\EscuelaTCSDB\bin\NLog.dll
+C:\Users\franc\source\repos\EscuelaTCSDB\EscuelaTCSDB\bin\NLog.xml

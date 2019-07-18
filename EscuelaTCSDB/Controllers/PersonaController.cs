@@ -17,6 +17,7 @@ namespace EscuelaTCSDB.Controllers
     [Authorize(Roles = "Directivo")]
     public class PersonaController : Controller
     {
+        private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         public ApplicationUserManager UserManager
@@ -35,6 +36,7 @@ namespace EscuelaTCSDB.Controllers
 
         public PersonaController()
         {
+            //log.Info("Hola chiquibeibis");
             _ctx = new ApplicationDbContext();
         }
         protected override void Dispose(bool disposing)
@@ -43,19 +45,27 @@ namespace EscuelaTCSDB.Controllers
         }
         public ActionResult Index()
         {
-            //            List<TipoPersona> ltp = _ctx.TipoPersonas.ToList();
-            List<Persona> lp =
+            List<Persona> lp = new List<Persona>();
+            try
+            {
+                lp =
                 _ctx.Personas.
                 Include(x => x.TipoPersona)
                 .Include(x => x.usuarios)
                .ToList();
-            return View(lp);
+                return View(lp);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return View(lp);
+            }
         }
 
         //metodo de crear, redireccionamiento
-        public ActionResult Create() {
+        public ActionResult Create()
+        {
             List<TipoPersona> personas = _ctx.TipoPersonas.ToList();
-
             PersonaViewModel vm = new PersonaViewModel();
             vm.TipoPersonas = personas;
 
@@ -66,32 +76,36 @@ namespace EscuelaTCSDB.Controllers
         public ActionResult Crear(PersonaViewModel pvm)
         {
             string rootPath = Server.MapPath(Constantes.RUTA_GUARDAR_FOTOS_PERFIL_PERSONAS);
-            Persona p = null; 
+            Persona p = null;
             String tipo = "";
             string filePath = "";
             string relativePath = "";
-            try {
+            try
+            {
                 //Validamos que todo sea correcto
-                if (!ModelState.IsValid) {
+                if (!ModelState.IsValid)
+                {
                     pvm.TipoPersonas = _ctx.TipoPersonas.ToList();
                     return View("FormPersona", pvm);
                 }
                 HttpPostedFileBase foto = pvm.foto_archivo;
                 string nombre_archivo = "";
-                if (foto != null) {
+                if (foto != null)
+                {
                     nombre_archivo = Guid.NewGuid() + Path.GetExtension(foto.FileName);
 
                     if (!Directory.Exists(rootPath))
                     {
                         Directory.CreateDirectory(rootPath);
                     }
-                    filePath = Path.Combine(rootPath,nombre_archivo);
-                    relativePath = Constantes.RUTA_GUARDAR_FOTOS_PERFIL_PERSONAS+nombre_archivo;
+                    filePath = Path.Combine(rootPath, nombre_archivo);
+                    relativePath = Constantes.RUTA_GUARDAR_FOTOS_PERFIL_PERSONAS + nombre_archivo;
                     foto.SaveAs(filePath);
 
                 }
 
-                if (pvm.Id == 0){
+                if (pvm.Id == 0)
+                {
                     p = new Persona();
                     p.nombre = pvm.nombre;
                     p.apellido = pvm.apellido;
@@ -102,7 +116,7 @@ namespace EscuelaTCSDB.Controllers
                         p.foto = relativePath;
                     }
                     p.TipoPersonaId = pvm.TipoPersonaId.Value;
-                    
+
                     _ctx.Personas.Add(p);
                 }
                 else
@@ -120,34 +134,36 @@ namespace EscuelaTCSDB.Controllers
                         valor.password = pvm.password;
                         valor.TipoPersonaId = pvm.TipoPersonaId.Value;
                         //revisamos si tiene foto
-                        if (!String.IsNullOrEmpty(valor.foto)) {
+                        if (!String.IsNullOrEmpty(valor.foto))
+                        {
                             string ruta_absoluta = Server.MapPath(valor.foto);
                             System.IO.File.Delete(ruta_absoluta);
 
                         }
-                        if (!String.IsNullOrEmpty(relativePath)) {
+                        if (!String.IsNullOrEmpty(relativePath))
+                        {
                             valor.foto = relativePath;
                         }
 
                     }
-
                 }
-
-
-            } catch(Exception e) {
-                ModelState.AddModelError("", e);
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e);
+                ModelState.AddModelError("", e.Message);
                 pvm.TipoPersonas = _ctx.TipoPersonas.ToList();
                 return View("FormPersona", pvm);
             }
             //Aqui siempre se llega, de modo que se guarda
             _ctx.SaveChanges();
-            
+
             if (pvm.Id == 0)
             {
 
                 ApplicationUser user = new ApplicationUser { UserName = pvm.email, Email = pvm.email, PersonaId = p.Id };
                 var result = UserManager.Create(user, pvm.password);
-                if (result.Succeeded)
+               if (result.Succeeded)
                 {
                     var tipoPersona = _ctx.TipoPersonas.Where(x => x.Id == pvm.TipoPersonaId).SingleOrDefault();
                     if (null != tipoPersona)
@@ -164,14 +180,16 @@ namespace EscuelaTCSDB.Controllers
                     return View("FormPersona", pvm);
                 }
             }
-            else {
+            else
+            {
                 //Es existente, le vamos a asignar otro rol
 
                 ApplicationUser user = p.usuarios.FirstOrDefault();
                 var tipoPersona = _ctx.TipoPersonas.Where(x => x.Id == pvm.TipoPersonaId).SingleOrDefault();
                 if (null != tipoPersona)
                 {
-                    foreach (IdentityUserRole i in user.Roles) {
+                    foreach (IdentityUserRole i in user.Roles)
+                    {
                         UserManager.RemoveFromRole(user.Id, tipo);
                     }
                     UserManager.AddToRole(user.Id, tipoPersona.descripcion);
@@ -188,37 +206,45 @@ namespace EscuelaTCSDB.Controllers
             }
         }
 
-        /*
-        //Eliminar
+        public ActionResult Editar(int id)
+        {
+            PersonaViewModel vm = new PersonaViewModel();
+            try
+            {
+                var persona = _ctx.Personas.Find(id);
+                List<TipoPersona> ltp = _ctx.TipoPersonas.ToList();
+                vm = new PersonaViewModel(persona);
+                vm.TipoPersonas = ltp;
+
+                return View("FormPersona", vm);
+            }
+            catch (Exception e) {
+                Logger.Error(e);
+                ModelState.AddModelError("", e.Message);
+                return View("FormPersona",vm);
+            }
+            }
+
         public ActionResult Eliminar(int id)
         {
-            var tipo = _ctx.TipoPersonas.Find(id);
-            _ctx.TipoPersonas.Remove(tipo);
-            _ctx.SaveChanges();
-            return RedirectToAction("Index");
+            try
+            {
+                var user = _ctx.Users.Where(x => x.PersonaId == id).FirstOrDefault();
+                var persona = _ctx.Personas.Find(id);
 
-        }*/
+                _ctx.Users.Remove(user);
+                _ctx.SaveChanges();
 
-        public ActionResult Editar(int id) {
-            var persona = _ctx.Personas.Find(id);
-            List <TipoPersona> ltp = _ctx.TipoPersonas.ToList();
-            PersonaViewModel vm = new PersonaViewModel(persona);
-            vm.TipoPersonas = ltp;
-
-            return View("FormPersona", vm);
-        }
-
-        public ActionResult Eliminar(int id) {
-            var user = _ctx.Users.Where(x => x.PersonaId == id).FirstOrDefault();
-            var persona = _ctx.Personas.Find(id);
-
-            _ctx.Users.Remove(user);
-            _ctx.SaveChanges();
-
-            _ctx.Personas.Remove(persona);
-            _ctx.SaveChanges();
-            return RedirectToAction("Index");
-        }
+                _ctx.Personas.Remove(persona);
+                _ctx.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch (Exception e) {
+                Logger.Error(e);
+                ModelState.AddModelError("", e.Message);
+                return RedirectToAction("Index");
+            }
+            }
 
     }
 }
