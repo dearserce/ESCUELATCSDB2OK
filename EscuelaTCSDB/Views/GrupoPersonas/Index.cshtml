@@ -4,8 +4,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <h2>Asignacion Grupos</h2>
-<p>@Html.ActionLink("Nueva Asignacion", "Create")</p>
-<table class="table">
+@Html.ActionLink("Nueva Asignación", "Create", null, new { @class = "btn btn-primary pull-left" })
+@Html.ActionLink("Cargar desde Excel", "Excel", null, new { @class = "btn btn-success pull-right" })
+<table class="table" id="tabla-asignacion">
     <thead>
         <tr>
             <th>#</th>
@@ -15,27 +16,34 @@
             <th>Persona</th>
             <th>Profesor</th>
         </tr>
-        <!--Dynamic content-->
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@Html.DisplayFor(x => item.Id)</td>
-                <td>@item.Grupo.codigo</td>
-                <td>@Html.DisplayFor(x => item.Materia.nombre)</td>
-                <td>
-                    @Html.DisplayFor(x => item.Ciclo.fecha_inicio) - 
-                                @Html.DisplayFor(x => item.Ciclo.fecha_fin)
-                            </td>
-                <td>@Html.DisplayFor(x => item.Persona.nombre)  
-                @Html.DisplayFor(x => item.Persona.apellido)</td>
-                <td>@Html.DisplayFor(x => item.Profesor.email)</td>
-               
-
-                <td>
-                    @Html.ActionLink("Editar", "Editar", new { id = item.Id }) |
-                    @Html.ActionLink("Eliminar", "Eliminar", new { id = item.Id })
-                </td>
-            </tr>
-        }
+        
     </thead>
 </table>
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tabla-asignacion').DataTable({
+                ajax: {
+                    url: "/api/GruposPersona",
+                    dataSrc: ""
+                },
+                columns: [
+                    {data: "id"},
+                    { data: "grupo.codigo" },
+                    { data: "materia.nombre" },
+                    { data: "ciclo.descripcion" },
+                    {
+                        data: "persona.nombre",
+                        render: function (data, type, obj) {
+                            return obj.persona.nombre + " " + obj.persona.apellido;
+                        }
+                    },
+                    { data: "profesor.email" }
+                ],
+            });
+
+
+        });
+    </script>    
+}

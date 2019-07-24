@@ -1,0 +1,41 @@
+﻿@model EscuelaTCSDB.Models.ViewModel.GrupoPersonaExcelViewModel
+@{
+    ViewBag.Title = "Asignacion Grupos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <h2>Asignación de Grupos por medio de Excel</h2>
+                @Html.ActionLink("Volver", "Index", null, new { @class = "btn btn-primary pull-left" })
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="form-group">
+                    
+                <div class="col-sm-3">
+                    <p class="text-justify">Puedes generar una asignación de grupos por medio de un archivo de <b>Excel</b>, siempre y cuando respetes la forma especificada de uso de <b>la plantilla</b>. Puedes encontrar este documento en la parte inferior de el texto actual, en un botón. Recuerda que una vez descargada la plantilla, deberás llenarla y finalmente <b>volver a subir el archivo</b> con información en el botón que se encuentra a la derecha, si tienes alguna duda, puedes seleccionar el <b>ícono de ayuda</b> que se encuentra en el título de esta página.</p>
+                    <a href="~/Content/Files/plantilla-asignacion.xlsx" class="btn btn-success">Plantilla</a>
+
+                </div>
+                <div class="col-sm-9">
+                    <h3>Carga de archivo</h3>
+
+                    @using (Html.BeginForm("SubirExcel", "GrupoPersonas", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary("", new { @class = "text-danger" })
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.file)
+                            @Html.TextBoxFor(m => m.file, new { id = "archivo-excel", name = "archivo-excel", type = "file", @class = "form-control", multiple = "false" })
+                        </div>
+                        <button class="btn btn-primary" type="submit">Cargar</button>
+                    }
+
+                </div>                
+            </div>
+        </div>
+    </div>
+</div>
+

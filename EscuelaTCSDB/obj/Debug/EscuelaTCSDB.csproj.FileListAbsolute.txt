@@ -148,3 +148,5 @@ C:\Users\franc\source\repos\EscuelaTCSDB\EscuelaTCSDB\bin\WebActivatorEx.dll
 C:\Users\franc\source\repos\EscuelaTCSDB\EscuelaTCSDB\bin\NLog.config
 C:\Users\franc\source\repos\EscuelaTCSDB\EscuelaTCSDB\bin\NLog.dll
 C:\Users\franc\source\repos\EscuelaTCSDB\EscuelaTCSDB\bin\NLog.xml
+C:\Users\franc\source\repos\EscuelaTCSDB\EscuelaTCSDB\bin\EPPlus.dll
+C:\Users\franc\source\repos\EscuelaTCSDB\EscuelaTCSDB\bin\EPPlus.xml

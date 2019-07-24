@@ -2,10 +2,11 @@
 using EscuelaTCSDB.Models.ViewModel;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 using System.Data.Entity;
+using System.Linq;
+using System.Web.Mvc;
+using OfficeOpenXml;
+using System.IO;
 
 namespace EscuelaTCSDB.Controllers
 {
@@ -22,15 +23,7 @@ namespace EscuelaTCSDB.Controllers
             _ctx.Dispose();
         }
         public ActionResult Index() {
-             List<GrupoPersona> gpl = _ctx.GrupoPersonas.
-                Include(x => x.Grupo).
-                Include(x => x.Materia).
-                Include(x => x.Persona).
-                Include(x => x.Ciclo).
-                Include(x => x.Profesor).OrderBy(x => x.Persona.nombre).ToList();
-
-            return View(gpl);
-            //return View("Index");
+            return View();
         }
          public ActionResult Create() {
             List<Grupo> grupos = _ctx.Grupos.ToList();
@@ -49,6 +42,61 @@ namespace EscuelaTCSDB.Controllers
             return View("FormGrupoPersonas", gpvm); 
         }
 
+        //Excel Vista
+        public ActionResult Excel() {
+            return View("FormExcel");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+       public ActionResult SubirExcel(GrupoPersonaExcelViewModel gpevm) {
+            if (!ModelState.IsValid) {
+                return View("FormExcel", gpevm);
+            }
+
+            //En este punto tenemos el View model con informacion.
+            //generamos un path.
+            String path = Server.MapPath(Constantes.RUTA_TEMPORAL_EXCEL_GRUPOPERSONAS + gpevm.file.FileName);
+            
+            //revisamos si existe el archivo, al final de todo esto se elimina, es decir, no debe de existir el archivo.
+            if (!System.IO.File.Exists(path)) {
+                gpevm.file.SaveAs(path);
+
+                FileInfo fi = new FileInfo(path);
+                if (fi.Exists) {
+                    using (ExcelPackage ep = new ExcelPackage(fi)) {
+
+                        //Implícitamente solo existe 1 worksheet, de modo que tomamos el primero
+                        ExcelWorksheet exw = ep.Workbook.Worksheets[1];
+
+                        //obtenemos las columnas y filas.
+                        int columCount = exw.Dimension.End.Column;
+                        int rowCount = exw.Dimension.End.Row;
+
+                        //generamos una lista vacia
+                        List<GrupoPersona> lgp = new List<GrupoPersona>();
+
+                        for (int row = 2; row < rowCount; row++) {
+                            GrupoPersona gp = new GrupoPersona();
+                            gp.PersonaId = int.Parse(exw.Cells[row,1].Text);
+                            gp.GrupoId = int.Parse(exw.Cells[row,2].Text);
+                            gp.MateriaId = int.Parse(exw.Cells[row, 3].Text);
+                            gp.CicloId = int.Parse(exw.Cells[row, 4].Text);
+                            gp.ProfesorId = int.Parse(exw.Cells[row, 5].Text);
+
+                            lgp.Add(gp);
+                        }
+                        //ahora guardamos
+                        for (int i = 0; i < lgp.Count; i++) {
+                            _ctx.GrupoPersonas.Add(lgp[i]);
+                        }
+                        _ctx.SaveChanges();
+                        Index();
+                    }
+                }
+              }
+            return View("FormExcel", gpevm);
+        }
         //Crear
         public ActionResult Crear(GrupoPersonaViewModel gpvm)
         {

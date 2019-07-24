@@ -45,10 +45,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EPPlus, Version=4.5.3.2, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.5.3.2\lib\net40\EPPlus.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.6.6\lib\net45\NLog.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -57,6 +61,7 @@
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web.DynamicData" />
@@ -191,6 +196,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AlumnoController.cs" />
     <Compile Include="Controllers\api\AlumnosCalificacionesController.cs" />
+    <Compile Include="Controllers\api\GruposPersonaController.cs" />
     <Compile Include="Controllers\api\PersonasController.cs" />
     <Compile Include="Controllers\api\TiposPersonaController.cs" />
     <Compile Include="Controllers\CalificacionController.cs" />
@@ -204,6 +210,7 @@
     <Compile Include="Controllers\ModalidadController.cs" />
     <Compile Include="Controllers\PersonaController.cs" />
     <Compile Include="Controllers\TipoPersonaController.cs" />
+    <Compile Include="CustomValidations\FileExt.cs" />
     <Compile Include="CustomValidations\GrupoValidation.cs" />
     <Compile Include="CustomValidations\MateriaValidation.cs" />
     <Compile Include="CustomValidations\PersonaEmailValidation.cs" />
@@ -324,6 +331,7 @@
     <Compile Include="Models\ViewModel\ContactoViewModel.cs" />
     <Compile Include="Models\ViewModel\DDLPeriodosViewModel.cs" />
     <Compile Include="Models\ViewModel\GpPeriodoViewModel.cs" />
+    <Compile Include="Models\ViewModel\GrupoPersonaExcelViewModel.cs" />
     <Compile Include="Models\ViewModel\GrupoPersonaViewModel.cs" />
     <Compile Include="Models\ViewModel\GrupoViewModel.cs" />
     <Compile Include="Models\ViewModel\ListTipoPersonaViewModel.cs" />
@@ -495,6 +503,7 @@
     </Content>
     <Content Include="Content\toastr.scss" />
     <Content Include="Content\toastr.less" />
+    <Content Include="Content\Files\plantilla-asignacion.xlsx" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -637,6 +646,7 @@
     <Content Include="Views\Alumno\Index.cshtml" />
     <Content Include="Views\TipoPersona\subirFoto.cshtml" />
     <Content Include="Views\Contacto\Index.cshtml" />
+    <Content Include="Views\GrupoPersonas\FormExcel.cshtml" />
     <None Include="Web.Unit.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -724,6 +734,9 @@
     <EmbeddedResource Include="Migrations\201907091330214_foto.resx">
       <DependentUpon>201907091330214_foto.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
