@@ -14,5 +14,6 @@ namespace EscuelaTCSDB.Models.ViewModel
         [FileExt(Allow = ".xls,.xlsx", ErrorMessage = "Solo selecciona un Archivo de Excel")]
         [Required(ErrorMessage = "Selecciona un Archivo")]
         public HttpPostedFileBase file { get; set; }
+        public string rutaPlantilla { get; set; }
     }
 }

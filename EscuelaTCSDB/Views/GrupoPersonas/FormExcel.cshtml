@@ -16,8 +16,7 @@
                     
                 <div class="col-sm-3">
                     <p class="text-justify">Puedes generar una asignación de grupos por medio de un archivo de <b>Excel</b>, siempre y cuando respetes la forma especificada de uso de <b>la plantilla</b>. Puedes encontrar este documento en la parte inferior de el texto actual, en un botón. Recuerda que una vez descargada la plantilla, deberás llenarla y finalmente <b>volver a subir el archivo</b> con información en el botón que se encuentra a la derecha, si tienes alguna duda, puedes seleccionar el <b>ícono de ayuda</b> que se encuentra en el título de esta página.</p>
-                    <a href="~/Content/Files/plantilla-asignacion.xlsx" class="btn btn-success">Plantilla</a>
-
+                    @Html.ActionLink("Descargar", "Excel", null, new { @class = "btn btn-success" })
                 </div>
                 <div class="col-sm-9">
                     <h3>Carga de archivo</h3>

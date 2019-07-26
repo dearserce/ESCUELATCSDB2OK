@@ -503,7 +503,6 @@
     </Content>
     <Content Include="Content\toastr.scss" />
     <Content Include="Content\toastr.less" />
-    <Content Include="Content\Files\plantilla-asignacion.xlsx" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -653,6 +652,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\Files\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
